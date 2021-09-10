@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars') //載入樣板引擎
 const Record = require('./models/record') //載入資料庫連結 Record
+const methodOverride = require('method-override') //路由自定義模組 (restful用)
 const bodyParser = require('body-parser') //req.body存取器 (form資料存取器)
 
 const app = express()
@@ -29,6 +30,7 @@ app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
 app.use(bodyParser.urlencoded({ extended: true })) // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
+app.use(methodOverride('_method')) 
 
 // --路由設定--
 // 首頁路由
@@ -70,7 +72,7 @@ app.get('/records/:id/edit', (req, res) => {
     .catch((error) => console.log(error))
 })
 
-app.post('/records/:id/edit', (req, res) => {
+app.put('/records/:id', (req, res) => {
   const id = req.params.id
   const { name, isDone } = req.body
   return Record.findById(id)
@@ -84,7 +86,7 @@ app.post('/records/:id/edit', (req, res) => {
 })
 
 // delete路由
-app.post('/records/:id/delete', (req, res) => {
+app.delete('/records/:id', (req, res) => {
   const id = req.params.id
   return Record.findById(id)
     .then((record) => record.remove())
