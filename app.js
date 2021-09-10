@@ -35,6 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true })) // 用 app.use 規定每一�
 app.get('/', (req, res) => {
   Record.find() //找出全部紀錄
     .lean() //轉換格式成Javascript陣列
+    .sort({ _id: 'asc' }) //照_id數字降序排序
     .then((records) => res.render('index', { records })) //把records傳給index.hbs，並且渲染index
     .catch((errors) => console.log(errors)) //如果有錯誤console出來
 })
