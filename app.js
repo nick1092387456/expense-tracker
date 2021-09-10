@@ -1,9 +1,11 @@
 // 載入 express 並建構應用程式伺服器
 const express = require('express')
 const mongoose = require('mongoose') // 載入 mongoose
+const exphbs = require('express-handlebars') //載入樣板引擎
 
 const app = express()
 
+// --資料庫設定--
 // 設定連線到 mongoDB
 mongoose.connect('mongodb://localhost:27017/expense-tracker', {
   useNewUrlParser: true,
@@ -20,9 +22,14 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+// --樣板設定--
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
+
+// --路由設定--
 // 設定首頁路由
 app.get('/', (req, res) => {
-  res.send('hello world')
+  res.render('index')
 })
 
 // 設定 port 3000
