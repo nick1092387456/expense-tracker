@@ -60,6 +60,27 @@ app.get('/records/:id', (req, res) => {
     .catch((error) => console.log(error))
 })
 
+// edit路由
+app.get('/records/:id/edit', (req, res) => {
+  const id = req.params.id //使用params取得網址上的動態id
+  return Record.findById(id)
+    .lean()
+    .then((record) => res.render('edit', { record }))
+    .catch((error) => console.log(error))
+})
+
+app.post('/records/:id/edit', (req, res) => {
+  const id = req.params.id
+  const name = req.body.name
+  return Record.findById(id)
+    .then((record) => {
+      record.name = name
+      return record.save()
+    })
+    .then(() => res.redirect(`/records/${id}`))
+    .catch((error) => console.log(error))
+})
+
 // 設定 port 3000
 app.listen(3000, () => {
   console.log('App is running on http://localhost:3000')
