@@ -71,10 +71,11 @@ app.get('/records/:id/edit', (req, res) => {
 
 app.post('/records/:id/edit', (req, res) => {
   const id = req.params.id
-  const name = req.body.name
+  const { name, isDone } = req.body
   return Record.findById(id)
     .then((record) => {
       record.name = name
+      record.isDone = isDone === 'on' //model模型值為布林值，使用===比較產生布林值結果並傳回isDone
       return record.save()
     })
     .then(() => res.redirect(`/records/${id}`))
