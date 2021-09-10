@@ -2,6 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars') //載入樣板引擎
+const Record = require('./models/record') //載入資料庫連結 Record
 
 const app = express()
 
@@ -29,7 +30,10 @@ app.set('view engine', 'hbs')
 // --路由設定--
 // 設定首頁路由
 app.get('/', (req, res) => {
-  res.render('index')
+  Record.find() //找出全部紀錄
+    .lean() //轉換格式成Javascript陣列
+    .then((records) => res.render('index', { records })) //把records傳給index.hbs，並且渲染index
+    .catch((errors) => console.log(errors)) //如果有錯誤console出來
 })
 
 // 設定 port 3000
