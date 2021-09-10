@@ -51,6 +51,15 @@ app.post('/records', (req, res) => {
     .catch((errors) => console.log(errors))
 })
 
+// detail路由
+app.get('/records/:id', (req, res) => {
+  const id = req.params.id //使用params取得網址上的動態id
+  return Record.findById(id)
+    .lean()
+    .then((record) => res.render('detail', { record }))
+    .catch((error) => console.log(error))
+})
+
 // 設定 port 3000
 app.listen(3000, () => {
   console.log('App is running on http://localhost:3000')
