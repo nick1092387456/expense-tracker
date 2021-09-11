@@ -5,14 +5,17 @@ const Category = require('../../models/category')
 
 // create路由
 router.get('/new', (req, res) => {
-  res.render('new')
+  Category.find()
+    .lean()
+    .then((categories) => res.render('new', { categories }))
+    .catch((error) => console.error(error))
 })
 
 router.post('', (req, res) => {
-  const name = req.body.name // 從 req.body 拿出new.hbs form裡的 name="name" 資料(value)
-  return Record.create({ name }) // 存入資料庫
+  const { name, date, category, amount } = req.body // 從 req.body 拿出new.hbs form裡的 name="name" 資料(value)
+  return Record.create({ name, date, category, amount }) // 存入資料庫
     .then(() => res.redirect('/')) // 新增完成後導回首頁
-    .catch((errors) => console.log(errors))
+    .catch((error) => console.log(error))
 })
 
 // edit路由
