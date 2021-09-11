@@ -7,7 +7,10 @@ const Record = require('../../models/record')
 const Category = require('../../models/category')
 // 定義首頁路由
 router.get('/', async (req, res) => {
-  const records = await Record.find().lean().sort({ date: 'desc', _id: 'desc' })
+  const userId = req.user._id
+  const records = await Record.find({ userId })
+    .lean()
+    .sort({ date: 'desc', _id: 'desc' })
   const categoryList = await Category.find().lean().sort({ _id: 'asc' })
   let totalAmount = 0
   for (let amount of records) {
@@ -18,9 +21,10 @@ router.get('/', async (req, res) => {
 
 // category 路由
 router.get('/filter', async (req, res) => {
+  const userId = req.user._id
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
   const { categorySelector } = req.query
-  const records = await Record.find({ category: categorySelector })
+  const records = await Record.find({ category: categorySelector, userId })
     .lean()
     .sort({ _id: 'desc' })
   let totalAmount = 0

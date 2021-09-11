@@ -7,6 +7,7 @@ const MONGODB_URI =
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 })
 // 取得資料庫連線狀態
 const db = mongoose.connection

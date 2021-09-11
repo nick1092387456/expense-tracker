@@ -18,6 +18,13 @@ const recordSchema = new Schema({
     type: Number,
     required: true,
   },
+  // 使用mongoose提供的userId做關聯設定
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true,
+  },
 })
 
 module.exports = mongoose.model('record', recordSchema)
