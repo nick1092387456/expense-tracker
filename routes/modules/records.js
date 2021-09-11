@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
+const Category = require('../../models/category')
 
 // create路由
 router.get('/new', (req, res) => {
@@ -14,34 +15,28 @@ router.post('', (req, res) => {
     .catch((errors) => console.log(errors))
 })
 
-// detail路由
-router.get('/:id', (req, res) => {
-  const id = req.params.id //使用params取得網址上的動態id
-  return Record.findById(id)
-    .lean()
-    .then((record) => res.render('detail', { record }))
-    .catch((error) => console.log(error))
-})
-
 // edit路由
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', async (req, res) => {
+  const categoryList = await Category.find().lean()
   const id = req.params.id //使用params取得網址上的動態id
   return Record.findById(id)
     .lean()
-    .then((record) => res.render('edit', { record }))
+    .then((record) => res.render('edit', { record, categoryList }))
     .catch((error) => console.log(error))
 })
 
 router.put('/:id', (req, res) => {
   const id = req.params.id
-  const { name, isDone } = req.body
+  const { name, date, category, amount } = req.body
   return Record.findById(id)
     .then((record) => {
       record.name = name
-      record.isDone = isDone === 'on' //model模型值為布林值，使用===比較產生布林值結果並傳回isDone
+      record.date = date
+      record.category = category
+      record.amount = amount
       return record.save()
     })
-    .then(() => res.redirect(`${id}`))
+    .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
 })
 
