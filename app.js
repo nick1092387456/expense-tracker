@@ -6,6 +6,10 @@ const exphbs = require('express-handlebars') //載入樣板引擎
 const Record = require('./models/record') //載入model連結 Record
 const methodOverride = require('method-override') //路由自定義模組 (restful用)
 const flash = require('connect-flash') //小訊息box套件
+//dotenv判別目前操作環境
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const bodyParser = require('body-parser') //req.body存取器 (form資料存取器)
 
 // Helpers
@@ -27,7 +31,7 @@ app.set('view engine', 'hbs')
 
 app.use(
   session({
-    secret: 'ThisisMySecret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })
