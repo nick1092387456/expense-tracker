@@ -12,6 +12,7 @@ const { ifEqual } = require('./tools/helper')
 require('handlebars-helpers')()
 
 const routes = require('./routes') //引入路由設定
+const usePassport = require('./config/passport')
 const app = express()
 const PORT = process.env.PORT || 3000 // 如果在 Heroku 環境則使用 process.env.PORT
 
@@ -33,7 +34,7 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true })) // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 
 app.use(methodOverride('_method'))
-
+usePassport(app)
 // --路由設定--
 app.use(routes)
 

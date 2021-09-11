@@ -1,13 +1,20 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../../models/user')
+const passport = require('passport')
 
 // 登入路由
 router.get('/login', (req, res) => {
   res.render('login')
 })
 
-router.post('login', async (req, res) => {})
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/users/login',
+  })
+)
 
 // 註冊路由
 router.get('/register', (req, res) => {
