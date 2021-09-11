@@ -8,21 +8,19 @@ const bodyParser = require('body-parser') //req.body存取器 (form資料存取�
 
 const routes = require('./routes') //引入路由設定
 const app = express()
-
-// --資料庫設定--
-
+const PORT = process.env.PORT || 3000 // 如果在 Heroku 環境則使用 process.env.PORT
 
 // --樣板設定--
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
-
 app.use(bodyParser.urlencoded({ extended: true })) // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
+
 app.use(methodOverride('_method'))
 
 // --路由設定--
 app.use(routes)
 
 // 設定 port 3000
-app.listen(3000, () => {
-  console.log('App is running on http://localhost:3000')
+app.listen(PORT, () => {
+  console.log(`App is running on http://localhost:${PORT}`)
 })
