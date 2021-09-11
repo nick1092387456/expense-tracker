@@ -35,6 +35,14 @@ app.use(bodyParser.urlencoded({ extended: true })) // 用 app.use 規定每一�
 
 app.use(methodOverride('_method'))
 usePassport(app)
+
+//middleware
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated() //isAuthenticated()回傳的是布林值
+  res.locals.user = req.user //res.locals 是 Express.js 幫我們開的一條捷徑，放在 res.locals 裡的資料，所有的 view 都可以存取。
+  next()
+})
+
 // --路由設定--
 app.use(routes)
 
