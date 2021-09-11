@@ -16,22 +16,27 @@ router.get('/register', (req, res) => {
 
 router.post('/register', async (req, res) => {
   const { name, email, password, confirmPassword } = req.body
-  const theUser = await User.findOne({ email })
-  if (theUser) {
-    console.log('User already exists.')
-    res.render('register', {
-      name,
-      email,
-      password,
-      confirmPassword,
-    })
-  } else {
-    await User.create({
-      name,
-      email,
-      password,
-    })
-    res.redirect('/')
+  try {
+    const theUser = await User.findOne({ email })
+    if (theUser) {
+      console.log('User already exists.')
+      res.render('register', {
+        name,
+        email,
+        password,
+        confirmPassword,
+      })
+    } else {
+      await User.create({
+        name,
+        email,
+        password,
+      })
+      res.redirect('/')
+    }
+  } catch (error) {
+    console.log(error)
   }
 })
+
 module.exports = router
