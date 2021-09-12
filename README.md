@@ -54,3 +54,5 @@ App is running on http://localhost:3000
 ```
 
 5. 透過 Browser 打開 [http://localhost:3000](http://localhost:3000)
+
+6.測試帳號密碼 : root@example.com  密碼: 12345678
